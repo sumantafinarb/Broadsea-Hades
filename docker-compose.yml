@@ -1,0 +1,27 @@
+version: "3.9"
+
+volumes:
+  rstudiohome:
+  rstudiotmp:
+
+services:
+
+  broadsea-hades:
+    build:
+      context: .
+      secrets:
+        - build_github_pat
+    image: ohdsi/broadsea-hades:4.2.1
+    container_name: rstudio
+    ports:
+      - "8787:8787"  # RStudio server http and websocket connections
+      - "6311:6311"  # Rserve connections
+    volumes:
+      - rstudiohome:/home
+      - rstudiotmp:/tmp
+    environment:
+      - PASSWORD=mypass
+
+secrets:
+  build_github_pat:
+    file: GITHUBPAT.txt
