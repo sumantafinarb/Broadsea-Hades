@@ -21,6 +21,15 @@ ENV AZURE_CLIENT_ID="<Your-Client-ID>"
 ENV AZURE_CLIENT_SECRET="<Your-Client-Secret>"
 ENV AZURE_TENANT_ID="<Your-Tenant-ID>"
 
+
+# create a script to set Azure authentication in R
+RUN echo "library(AzureAuthR)" >> /usr/local/bin/setup_azure_auth.R \
+    && echo "az <- createAzureGraphClient(clientId = Sys.getenv('AZURE_CLIENT_ID'), clientSecret = Sys.getenv('AZURE_CLIENT_SECRET'), tenantId = Sys.getenv('AZURE_TENANT_ID'))" >> /usr/local/bin/setup_azure_auth.R \
+    && echo "az" >> /usr/local/bin/setup_azure_auth.R
+
+# configure the script to run on container start
+RUN echo "Rscript /usr/local/bin/setup_azure_auth
+
 # install OHDSI HADES R packages from CRAN and GitHub, temporarily adding a GitHub Personal Access Token (PAT) to the Renviron file
 RUN --mount=type=secret,id=build_github_pat \
 	cp /usr/local/lib/R/etc/Renviron /tmp/Renviron \
