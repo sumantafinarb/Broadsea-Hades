@@ -12,6 +12,8 @@ RUN install2.r \
 	openssl \
 	httr \
 	xml2 \
+ 	AzureAuthR \
+    	AzureRMR \
 	remotes \
 && rm -rf /tmp/download_packages/ /tmp/*.rds
 
